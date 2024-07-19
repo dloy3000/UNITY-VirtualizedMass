@@ -16,13 +16,12 @@ public class VirtualMass : MonoBehaviour
 
     public MassScalar Centroid { get { return centroid; } }
 
-    //Start is called before the first frame update
     void Awake()
     {
         meshVertex = this.GetComponent<MeshFilter>().sharedMesh.vertices; //Vertexes of the mesh.
         centroid = ReturnCentroid(); //Get Center of volume.
 
-        Debug.Log($"{this.gameObject.name}: {centroid}");
+        //Debug.Log($"{this.gameObject.name}: {centroid}");
     }
 
     //Calculates the centroid value of the mesh.

@@ -8,12 +8,13 @@ public class MassVirtualizer : MonoBehaviour
     private VirtualMass[] componentMass;
     private Rigidbody objectRB;
     private Vector3 massCenter;
+    private float massTotal;
 
-    //Start is called before the first frame update
     void Start()
     {
         objectRB = GetComponent<Rigidbody>();
         componentMass = this.GetComponentsInChildren<VirtualMass>();
+        massTotal = objectRB.mass;
 
         VirtualizeMass();
     }
@@ -24,21 +25,27 @@ public class MassVirtualizer : MonoBehaviour
     void VirtualizeMass()
     {
         double x = 0d, y = 0d, z = 0d;
+        float m = 0;
         int count = 0;
 
         for (int i = 0; i < componentMass.Length; i++)
         {
-            Debug.Log($"{i}: {componentMass[i].Centroid}");
+            m += componentMass[i].mass;
+
             x += componentMass[i].Centroid.x;
             y += componentMass[i].Centroid.y;
             z += componentMass[i].Centroid.z;
+
             count++;
         }
 
+        massTotal = m;
         massCenter = new Vector3((float)x, (float)y, (float)z);
-        Debug.Log($"Mass Center: [{x}, {y}, {z}]");
 
+        objectRB.mass = massTotal;
         objectRB.automaticCenterOfMass = false;
         objectRB.centerOfMass = massCenter;
+
+        //Debug.Log($"Mass Center: [{x}, {y}, {z}]");
     }
 }
